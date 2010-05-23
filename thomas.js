@@ -3,6 +3,8 @@ function thomas2(){
 
   var that = this, parseEl = document.createElement('div');
   
+  parseEl.style.display = 'none';
+  
   // protected properties
 
   this.props = 'backgroundColor borderBottomColor borderBottomWidth borderLeftColor borderLeftWidth borderRightColor borderRightWidth borderSpacing borderTopColor borderTopWidth bottom color fontSize fontWeight height left letterSpacing lineHeight marginBottom marginLeft marginRight marginTop maxHeight maxWidth minHeight minWidth opacity outlineColor outlineOffset outlineWidth paddingBottom paddingLeft paddingRight paddingTop right textIndent top width wordSpacing zIndex'.split(' ');
@@ -48,9 +50,11 @@ function thomas2(){
       el.className = cn;
     } else {
       parseEl.innerHTML = '<div style="' + style + '"></div>';
+      document.body.appendChild(parseEl);
       target = comp(parseEl.firstChild);
+      document.body.removeChild(parseEl);
     }
-     while(i--) {
+    while(i--) {
       prop = that.props[i];
       if (source[prop] != target[prop]) {
         var sourceVal = parse(prop, source[prop]), targetVal = parse(prop, target[prop]);
@@ -96,7 +100,7 @@ function thomas2(){
     }, 10);
   }
   this.timing = function(ease) {
-    return thomas2.prototype.functions[ease] || ease;
+    return thomas2.prototype.transitions[ease] || ease;
   }
     
   // public methods  
@@ -118,7 +122,7 @@ function thomas2(){
     that.animate(el, css, dur, easing);
   }
 }
-thomas2.prototype.functions = { 
+thomas2.prototype.transitions = { 
   'linear': function(p) { return p }, 'ease-in': function(p) { return -Math.cos(p * (Math.PI/2)) + 1; }, 'ease-out': function(p) { return Math.sin(p * (Math.PI/2)); }, 'ease-in-out': function(p) { return (-.5 * (Math.cos(Math.PI*p) -1)); } 
 };
 
@@ -158,7 +162,7 @@ function thomas3(){
     }, 0.01);      
   }
   this.timing = function(ease) {
-    var fn = thomas3.prototype.functions[ease];
+    var fn = thomas3.prototype.transitions[ease];
     return (typeof ease == 'function') ? 'ease' : fn ? 'cubic-bezier(' + fn + ')' : ease;
   }
 
@@ -166,26 +170,6 @@ function thomas3(){
 
   return returns;
 }
-thomas3.prototype.functions = {};
+thomas3.prototype.transitions = {};
 
 window.thomas = !window.WebKitCSSMatrix ? new thomas2 : new thomas3;
-
-// extra transitions
-
-thomas2.prototype.functions = (function(){
-  var fns = thomas2.prototype.functions, 
-    obj = { 'expo': function(p) { return Math.pow(2, 8 * (p - 1)) }, 'circ': function(p) { return 1 - Math.sin(Math.acos(p)) }};
-  'quad cubic quart quint'.split(' ').forEach(function(name, i) {
-    obj[name] = function(p) { return Math.pow(p, [i + 2]) }
-  });              
-  for (name in obj) {
-    var fn = obj[name];
-    fns[name + '-in'] = fn;
-    fns[name + '-out'] = (function(fn) { return function(p) { return 1 - fn(1 - p) }})(fn);
-    fns[name + '-in-out'] = (function(fn) { return function(p) { return (p <= 0.5) ? fn(2 * p) / 2 : (2 - fn(2 * (1 - p))) / 2 }})(fn);              
-  }
-  return fns;
-})();
-thomas3.prototype.functions = { 
-  'expo-in': '0.71,0.01,0.83,0', 'expo-out': '0.14,1,0.32,0.99', 'expo-in-out': '0.85,0,0.15,1', 'circ-in': '0.34,0,0.96,0.23', 'circ-out': '0,0.5,0.37,0.98', 'circ-in-out': '0.88,0.1,0.12,0.9', 'sine-in': '0.22,0.04,0.36,0', 'sine-out': '0.04,0,0.5,1', 'sine-in-out': '0.37,0.01,0.63,1', 'quad-in': '0.14,0.01,0.49,0', 'quad-out': '0.01,0,0.43,1', 'quad-in-out': '0.47,0.04,0.53,0.96', 'cubic-in': '0.35,0,0.65,0', 'cubic-out': '0.09,0.25,0.24,1', 'cubic-in-out': '0.66,0,0.34,1', 'quart-in': '0.69,0,0.76,0.17', 'quart-out': '0.26,0.96,0.44,1', 'quart-in-out': '0.76,0,0.24,1', 'quint-in': '0.64,0,0.78,0', 'quint-out': '0.22,1,0.35,1', 'quint-in-out': '0.9,0,0.1,1' 
-};
