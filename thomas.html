@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+  <title>thomas2</title>
+  <style type="text/css" media="screen">
+    .box { background: #f00; border: 1px solid #0f0; position: absolute; font: normal 12px sans-serif; }
+    .box1 { left: 200px; top: 0; }
+    .box2 { left: 0; top: 400px; }
+    .animate1 { background: #00f; border: 10px solid #000; height: 400px; margin: 20px 40px; }
+    .animate2 { opacity: 0.5; padding: 40px 20px; width: 500px; left: 100px; top: 200px; }
+ </style>
+  
+  <script src="thomas.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body id="thomas2" onload="">
+  <div class="box box1">test1</div>
+  <div class="box box2">test2</div>
+  
+  <script type="text/javascript" charset="utf-8">
+  	window.addEventListener('load', function() {
+  	  var divCollection = document.getElementsByTagName('div');
+  	  var divArray = Array().slice.call(divCollection); 
+  	  divArray.forEach(function(div) {
+  	    thomas(div, '.animate1', { duration: 5 * 1000, after: function() { console.log('done1'); } });
+  	    thomas(div, '.animate2', { link: 'chain', duration: 5 * 1000, after: function() { console.log('done2'); } });
+  	  });
+  	}, false);
+  </script>
+  
+</body>
+</html>
