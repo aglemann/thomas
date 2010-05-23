@@ -1,0 +1,12 @@
+thomas - named in honor of thomas fuchs, author or script.aculo.us, emile and scripty2
+inspired by emile with the following additions
+  - improvements to parsing engine
+  - allows morphing between one or more classes
+  - support for webkit transitions
+  - chaining controls
+  - additional timing functions
+  
+todo
+  - full set of tests
+  - add support for opera and mozila transitions
+  - add support for ie
