@@ -3,8 +3,6 @@ function thomas2(){
 
   var that = this, parseEl = document.createElement('div');
   
-  parseEl.style.display = 'none';
-  
   // protected properties
 
   this.props = 'backgroundColor borderBottomColor borderBottomWidth borderLeftColor borderLeftWidth borderRightColor borderRightWidth borderSpacing borderTopColor borderTopWidth bottom color fontSize fontWeight height left letterSpacing lineHeight marginBottom marginLeft marginRight marginTop maxHeight maxWidth minHeight minWidth opacity outlineColor outlineOffset outlineWidth paddingBottom paddingLeft paddingRight paddingTop right textIndent top width wordSpacing zIndex'.split(' ');
@@ -50,9 +48,7 @@ function thomas2(){
       el.className = cn;
     } else {
       parseEl.innerHTML = '<div style="' + style + '"></div>';
-      document.body.appendChild(parseEl);
-      target = comp(parseEl.firstChild);
-      document.body.removeChild(parseEl);
+      target = parseEl.firstChild.style;
     }
     while(i--) {
       prop = that.props[i];
